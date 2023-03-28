@@ -37,6 +37,7 @@ int main() {
         renderer.setSize(size);
     });
 
+
     canvas.animate([&] {
         renderer.render(scene, camera);
     });
