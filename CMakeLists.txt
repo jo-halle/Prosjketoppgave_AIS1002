@@ -1,11 +1,13 @@
 cmake_minimum_required(VERSION 3.15)
-project(project_template)
+project(MazeGame)
 
 set(CMAKE_CXX_STANDARD 17)
 
 find_package(threepp CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
-add_executable(test main.cpp Movment.hpp AttemptV.cpp)
+add_executable(test1 main.cpp )
+target_link_libraries(test1 PRIVATE threepp::threepp imgui::imgui)
 
-target_link_libraries(test PRIVATE threepp::threepp imgui::imgui)
+add_executable(test2 AttemptV.cpp)
+target_link_libraries(test2 PRIVATE threepp::threepp imgui::imgui)
