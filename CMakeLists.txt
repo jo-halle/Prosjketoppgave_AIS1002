@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(threepp CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 
-add_executable(test1 main.cpp )
-target_link_libraries(test1 PRIVATE threepp::threepp imgui::imgui)
+add_executable(testMain main.cpp )
+target_link_libraries(testMain PRIVATE threepp::threepp imgui::imgui)
 
-add_executable(test2 AttemptV.cpp)
-target_link_libraries(test2 PRIVATE threepp::threepp imgui::imgui)
+#add_executable(test2 AttemptV.cpp)
+#target_link_libraries(test2 PRIVATE threepp::threepp imgui::imgui)

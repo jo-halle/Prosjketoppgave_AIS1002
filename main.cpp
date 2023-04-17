@@ -1,7 +1,5 @@
 
 #include "threepp/threepp.hpp"
-#include "iostream"
-#include <thread>
 
 using namespace threepp;
 
@@ -17,13 +15,15 @@ public:
     Direction direction;
     Direction nextDirection;
     bool running;
+    bool movedThisFrame;
 
-    Game() : direction(Direction::LEFT), nextDirection(Direction::LEFT), running(true) {}
+    Game() : direction(Direction::LEFT), nextDirection(Direction::LEFT), running(false), movedThisFrame(false) {}
 
     void start() {
         direction = Direction::LEFT;
         nextDirection = Direction::LEFT;
         running = true;
+        movedThisFrame = false;
     }
 
     void stop() {
@@ -38,10 +38,10 @@ public:
         direction = Direction::LEFT;
         nextDirection = Direction::LEFT;
         running = false;
+        movedThisFrame = false;
     }
 
     void onKeyPressed(KeyEvent evt) override {
-        std::cout << "Key pressed: " << evt.key << std::endl;
         if (evt.key == 87 /*W*/) {
             nextDirection = Direction::UP;
         }
@@ -54,9 +54,11 @@ public:
         if (evt.key == 68 /*D*/) {
             nextDirection = Direction::RIGHT;
         }
-
+        if (evt.key == 82 /*R*/) {
+            reset();
+            start();
+        }
     }
-
 };
 
 int main() {
@@ -98,37 +100,44 @@ int main() {
 
     canvas.animate([&] {
         if (game.isRunning()) {
-            switch (game.nextDirection) {
-                case Direction::LEFT:
-                    if (game.direction != Direction::RIGHT) {
-                        mesh->position.x -= 0.1;
-                        game.direction = game.nextDirection;
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    }
-                    break;
-                case Direction::RIGHT:
-                    if (game.direction != Direction::LEFT) {
-                        mesh->position.x += 0.1;
-                        game.direction = game.nextDirection;
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    }
-                    break;
-                case Direction::UP:
-                    if (game.direction != Direction::DOWN) {
-                        mesh->position.z -= 0.1;
-                        game.direction = game.nextDirection;
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    }
-                    break;
-                case Direction::DOWN:
-                    if (game.direction != Direction::UP) {
-                        mesh->position.z += 0.1;
-                        game.direction = game.nextDirection;
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    }
-                    break;
-                default:
-                    break;
+            if (!game.movedThisFrame) {  // Only allow movement once per frame
+                switch (game.nextDirection) {
+                    case Direction::LEFT:
+                        if (game.direction != Direction::RIGHT) {
+                            mesh->position.x -= 0.1;
+                            game.direction = game.nextDirection;
+                            game.movedThisFrame = true;
+                        }
+                        break;
+                    case Direction::RIGHT:
+                        if (game.direction != Direction::LEFT) {
+                            mesh->position.x += 0.1;
+                            game.direction = game.nextDirection;
+                            game.movedThisFrame = true;
+                        }
+                        break;
+                    case Direction::UP:
+                        if (game.direction != Direction::DOWN) {
+                            mesh->position.z -= 0.1;
+                            game.direction = game.nextDirection;
+                            game.movedThisFrame = true;
+                        }
+                        break;
+                    case Direction::DOWN:
+                        if (game.direction != Direction::UP) {
+                            mesh->position.z += 0.1;
+                            game.direction = game.nextDirection;
+                            game.movedThisFrame = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                // Reset movedThisFrame flag if the player changes direction
+                if (game.nextDirection != game.direction) {
+                    game.movedThisFrame = false;
+                }
             }
         }
         renderer.render(scene, camera);
