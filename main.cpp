@@ -1,4 +1,3 @@
-
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
@@ -7,57 +6,60 @@ enum class Direction {
     LEFT,
     RIGHT,
     UP,
-    DOWN
+    DOWN,
+    REST
 };
 
 class Game : public KeyListener {
 public:
-    Direction direction;
     Direction nextDirection;
     bool running;
-    bool movedThisFrame;
+    bool shouldMove;
 
-    Game() : direction(Direction::LEFT), nextDirection(Direction::LEFT), running(false), movedThisFrame(false) {}
+    Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false) {}
 
     void start() {
-        direction = Direction::LEFT;
+
         nextDirection = Direction::LEFT;
         running = true;
-        movedThisFrame = false;
+        shouldMove = false;
     }
 
-    void stop() {
-        running = false;
-    }
 
     bool isRunning() const {
         return running;
     }
 
     void reset() {
-        direction = Direction::LEFT;
         nextDirection = Direction::LEFT;
         running = false;
-        movedThisFrame = false;
+        shouldMove = false;
     }
 
     void onKeyPressed(KeyEvent evt) override {
         if (evt.key == 87 /*W*/) {
             nextDirection = Direction::UP;
+            shouldMove = true;
         }
         if (evt.key == 83 /*S*/) {
             nextDirection = Direction::DOWN;
+            shouldMove = true;
         }
         if (evt.key == 65 /*A*/) {
             nextDirection = Direction::LEFT;
+            shouldMove = true;
         }
         if (evt.key == 68 /*D*/) {
             nextDirection = Direction::RIGHT;
+            shouldMove = true;
         }
         if (evt.key == 82 /*R*/) {
             reset();
             start();
         }
+//        if (evt.key == 32 /*SPACE*/) {
+//            nextDirection = Direction::REST;
+//        }
     }
 };
 
@@ -90,9 +92,10 @@ int main() {
     mesh->position.x = 0;
     mesh->position.y = 0.5;
     mesh->position.z = 0;
+    auto startingPosition = Vector3(mesh->position.x, mesh->position.y, mesh->position.z);
     group->add(mesh);
 
-    canvas.onWindowResize([&](WindowSize size){
+    canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
         camera->updateProjectionMatrix();
         renderer.setSize(size);
@@ -100,49 +103,35 @@ int main() {
 
     canvas.animate([&] {
         if (game.isRunning()) {
-            if (!game.movedThisFrame) {  // Only allow movement once per frame
+            if (game.shouldMove) {
                 switch (game.nextDirection) {
                     case Direction::LEFT:
-                        if (game.direction != Direction::RIGHT) {
-                            mesh->position.x -= 0.1;
-                            game.direction = game.nextDirection;
-                            game.movedThisFrame = true;
-                        }
+                        mesh->position.x -= 2.0;
                         break;
                     case Direction::RIGHT:
-                        if (game.direction != Direction::LEFT) {
-                            mesh->position.x += 0.1;
-                            game.direction = game.nextDirection;
-                            game.movedThisFrame = true;
-                        }
+                        mesh->position.x += 2.0;
                         break;
                     case Direction::UP:
-                        if (game.direction != Direction::DOWN) {
-                            mesh->position.z -= 0.1;
-                            game.direction = game.nextDirection;
-                            game.movedThisFrame = true;
-                        }
+                        mesh->position.z -= 2.0;
                         break;
                     case Direction::DOWN:
-                        if (game.direction != Direction::UP) {
-                            mesh->position.z += 0.1;
-                            game.direction = game.nextDirection;
-                            game.movedThisFrame = true;
-                        }
+                        mesh->position.z += 2.0;
+                        break;
+                    case Direction::REST:
                         break;
                     default:
                         break;
                 }
-            } else {
-                // Reset movedThisFrame flag if the player changes direction
-                if (game.nextDirection != game.direction) {
-                    game.movedThisFrame = false;
+
+                // Check if the box has moved one unit
+                if (abs(mesh->position.x - startingPosition.x) >= 2.0 ||
+                    abs(mesh->position.z - startingPosition.z) >= 2.0) {
+                    game.shouldMove = false;
                 }
             }
         }
         renderer.render(scene, camera);
     });
-
 
     return 0;
 }
