@@ -1,73 +1,69 @@
-
 #include "threepp/threepp.hpp"
-#include "threepp/extras/imgui/imgui_context.hpp"
+#include "game.hpp"
+#include "box.hpp"
+
 
 using namespace threepp;
 
 int main() {
-
     Canvas canvas;
     GLRenderer renderer(canvas);
-    renderer.setClearColor(Color::aliceblue);
+    renderer.setClearColor(Color::papayawhip);
 
     auto camera = PerspectiveCamera::create();
-    camera->position.z = 5;
+    camera->position.z = 10;
+    camera->position.y = 10;
 
     OrbitControls controls{camera, canvas};
 
     auto scene = Scene::create();
+    auto game = Game{};
+    canvas.addKeyListener(&game);
 
-    auto group = Group::create();
-    scene->add(group);
+    auto grid = GridHelper::create(20, 10, Color::red);
+    scene->add(grid);
 
-    {
-        auto geometry = ConeGeometry::create();
-        auto material = MeshBasicMaterial::create();
-        material->color = Color::purple;
-        auto mesh = Mesh::create(geometry, material);
-        mesh->position.x = -1;
-        group->add(mesh);
-    }
+    auto box = Box(*scene);
 
-    {
-        auto geometry = PlaneGeometry::create();
-        auto material = MeshBasicMaterial::create();
-        material->color = Color::blue;
-        auto mesh = Mesh::create(geometry, material);
-        mesh->position.x = 1;
-        group->add(mesh);
-    }
+    int rows = 10;
+    int cols = 10;
 
-    renderer.enableTextRendering();
-    auto& textHandle = renderer.textHandle("Hello World");
-    textHandle.setPosition(0, canvas.getSize().height-30);
-    textHandle.scale = 2;
-
-
-    std::array<float, 3> posBuf{};
-    imgui_functional_context ui(canvas.window_ptr(), [&] {
-        ImGui::SetNextWindowPos({0, 0}, 0, {0, 0});
-        ImGui::SetNextWindowSize({230, 0}, 0);
-        ImGui::Begin("Demo");
-        ImGui::SliderFloat3("position", posBuf.data(), -1.f, 1.f);
-        controls.enabled = !ImGui::IsWindowHovered();
-        ImGui::End();
-    });
-
-    canvas.onWindowResize([&](WindowSize size){
+    canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
         camera->updateProjectionMatrix();
         renderer.setSize(size);
-        textHandle.setPosition(0, size.height-30);
     });
 
     canvas.animate([&] {
+        if (game.isRunning()) {
+            if (game.shouldMove) {
+                switch (game.nextDirection) {
+                    case Direction::LEFT:
+                        box.getMesh()->position.x -= 2.0;
+                        break;
+                    case Direction::RIGHT:
+                        box.getMesh()->position.x += 2.0;
+                        break;
+                    case Direction::UP:
+                        box.getMesh()->position.z -= 2.0;
+                        break;
+                    case Direction::DOWN:
+                        box.getMesh()->position.z += 2.0;
+                        break;
+                    case Direction::REST:
+                        break;
+                    default:
+                        break;
+                }
 
+                if (abs(box.getMesh()->position.x - box.getStartingPosition().x) >= 2.0 ||
+                    abs(box.getMesh()->position.z - box.getStartingPosition().z) >= 2.0) {
+                    game.shouldMove = false;
+                }
+            }
+        }
         renderer.render(scene, camera);
-
-        ui.render();
-        group->position.fromArray(posBuf);
-
     });
 
+    return 0;
 }
