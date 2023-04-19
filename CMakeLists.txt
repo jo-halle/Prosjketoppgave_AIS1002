@@ -9,6 +9,3 @@ find_package(imgui CONFIG REQUIRED)
 add_executable(testMain main.cpp src/box.cpp src/game.cpp)
 target_link_libraries(testMain PRIVATE threepp::threepp imgui::imgui)
 
-add_executable(testMain2 main2.cpp )
-target_link_libraries(testMain2 PRIVATE threepp::threepp imgui::imgui)
-
