@@ -1,4 +1,3 @@
-
 #ifndef MAZEGAME_BOX_HPP
 #define MAZEGAME_BOX_HPP
 
@@ -8,7 +7,7 @@ using namespace threepp;
 
 class Box {
 public:
-    Box(Scene& scene);
+    Box(Scene& scene, const Color &color); // Add color parameter
     std::shared_ptr<Mesh> getMesh();
     Vector3 getStartingPosition();
 

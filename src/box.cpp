@@ -3,10 +3,10 @@
 
 using namespace threepp;
 
-Box::Box(Scene& scene) {
+Box::Box(Scene& scene, const Color &color) { // Add color parameter
     auto geometry = BoxGeometry::create();
     auto material = MeshBasicMaterial::create();
-    material->color = Color::purple;
+    material->color = color; // Use the provided color
     mesh = Mesh::create(geometry, material);
     mesh->position.x = 0;
     mesh->position.y = 0.5;

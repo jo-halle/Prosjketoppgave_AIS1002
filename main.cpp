@@ -22,12 +22,8 @@ int main() {
     canvas.addKeyListener(&game);
 
     game.maze.addToScene(*scene);
-
-    auto box = Box(*scene);
-    box.getMesh()->position = game.startPoint;
-
-
-
+    auto box = Box(*scene, Color::orange);
+    scene->add(box.getMesh());
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
@@ -59,7 +55,6 @@ int main() {
                         break;
                 }
 
-                // Check if the new position is not a wall
                 if (!game.maze.isWallAt(newPosition.x, newPosition.z)) {
                     box.getMesh()->position = newPosition;
                 }

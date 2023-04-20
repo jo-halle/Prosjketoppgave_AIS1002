@@ -1,42 +1,67 @@
-
 #include "../maze.hpp"
-#include "threepp/threepp.hpp"
+#include <random>
+#include <stack>
+#include <algorithm>
+#include <threepp/threepp.hpp>
 
 using namespace threepp;
 
-Maze::Maze(unsigned int width, unsigned int height) {
-    grid.resize(width, std::vector<bool>(height, false));
-
-    // Initialize the maze grid
-    for (unsigned int i = 0; i < width; ++i) {
-        for (unsigned int j = 0; j < height; ++j) {
-            grid[i][j] = false;
-        }
-    }
+Maze::Maze(unsigned int width, unsigned int height)
+        : width(width), height(height) {
+    grid.resize(height, std::vector<CellType>(width, WALL));
 }
 
-    // TODO: Generate a maze using an algorithm, e.g., Prim's, Kruskal's, or recursive backtracking
+bool Maze::isInside(unsigned int x, unsigned int y) const {
+    return x < width && y < height;
+}
 
+void Maze::generateMaze(unsigned int startX, unsigned int startY) {
+    std::stack<std::pair<unsigned int, unsigned int>> stack;
+    stack.push({startX, startY});
 
-void Maze::addToScene(Scene& scene) {
-    for (unsigned int i = 0; i < width; ++i) {
-        for (unsigned int j = 0; j < height; ++j) {
-            if (grid[i][j]) {
-                auto geometry = BoxGeometry::create();
-                auto material = MeshBasicMaterial::create();
-                material->color = Color::blue;
-                auto wall = Mesh::create(geometry, material);
-                wall->position.x = static_cast<float>(i) * 2.0f;
-                wall->position.y = 0.5f;
-                wall->position.z = static_cast<float>(j) * 2.0f;
-                scene.add(wall);
+    while (!stack.empty()) {
+        auto [x, y] = stack.top();
+        stack.pop();
+
+        if (!isInside(x, y) || grid[y][x] == PATH) {
+            continue;
+        }
+
+        grid[y][x] = PATH;
+
+        std::vector<std::pair<int, int>> directions = {
+                {0, 2}, {2, 0}, {0, -2}, {-2, 0}};
+
+        std::shuffle(directions.begin(), directions.end(), std::default_random_engine(std::random_device{}()));
+
+        for (const auto &[dx, dy] : directions) {
+            int nx = x + dx;
+            int ny = y + dy;
+
+            if (isInside(nx, ny) && grid[ny][nx] == WALL) {
+                grid[y + dy / 2][x + dx / 2] = PATH;
+                stack.push({nx, ny});
             }
         }
     }
 }
 
-bool Maze::isWallAt(int x, int z) const {
-    int i = x / 2;
-    int j = z / 2;
-    return (i >= 0 && i < width) && (j >= 0 && j < height) && grid[i][j];
+void Maze::addToScene(Scene &scene) {
+    for (unsigned int y = 0; y < height; ++y) {
+        for (unsigned int x = 0; x < width; ++x) {
+            if (isWallAt(x, y)) {
+                Box box(scene, Color::purple); // Set the box color
+                auto cube = box.getMesh();
+                cube->position.set(x, 0, y);
+                scene.add(cube);
+            }
+        }
+    }
+}
+
+bool Maze::isWallAt(unsigned int x, unsigned int y) const {
+    if (isInside(x, y)) {
+        return grid[y][x] == WALL;
+    }
+    return false;
 }
