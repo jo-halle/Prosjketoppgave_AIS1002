@@ -38,16 +38,16 @@ int main() {
 
                 switch (game.nextDirection) {
                     case Direction::LEFT:
-                        newPosition.x -= 2.0;
+                        newPosition.x -= 1.0;
                         break;
                     case Direction::RIGHT:
-                        newPosition.x += 2.0;
+                        newPosition.x += 1.0;
                         break;
                     case Direction::UP:
-                        newPosition.z -= 2.0;
+                        newPosition.z -= 1.0;
                         break;
                     case Direction::DOWN:
-                        newPosition.z += 2.0;
+                        newPosition.z += 1.0;
                         break;
                     case Direction::REST:
                         break;
@@ -57,6 +57,9 @@ int main() {
 
                 if (!game.maze.isWallAt(newPosition.x, newPosition.z)) {
                     box.getMesh()->position = newPosition;
+
+                    camera->position.x = newPosition.x;
+                    camera->position.z = newPosition.z +10;
                 }
 
                 game.shouldMove = false;

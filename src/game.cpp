@@ -1,11 +1,12 @@
-#include "../game.hpp"
+#include "../include/game.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
 
-Game::Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false), maze(20, 20) {
+Game::Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false), maze(30, 30) {
     startPoint = Vector3(1.0f, 0.5f, 1.0f);
     endPoint = Vector3(37.0f, 0.5f, 37.0f);
+    maze.generateMaze(startPoint.x, startPoint.z); // Generate the maze
 }
 
 void Game::start() {

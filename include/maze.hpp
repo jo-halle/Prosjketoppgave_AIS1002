@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <memory>
-#include <threepp/threepp.hpp>
+#include "threepp/threepp.hpp"
 #include "box.hpp"
 
 using namespace threepp;
@@ -26,5 +26,19 @@ private:
     unsigned int width, height;
     std::vector<std::vector<CellType>> grid;
 };
+
+inline bool Maze::isInside(unsigned int x, unsigned int y) const {
+    return x < width && y < height;
+}
+
+inline bool Maze::isWallAt(unsigned int x, unsigned int y) const {
+    if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
+        return true; // Check if (x, y) is a boundary cell
+    }
+    if (isInside(x, y)) {
+        return grid[y][x] == WALL;
+    }
+    return false;
+}
 
 #endif // MAZEGAME_MAZE_HPP
