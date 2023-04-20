@@ -16,14 +16,17 @@ int main() {
 
     OrbitControls controls{camera, canvas};
 
+
     auto scene = Scene::create();
     auto game = Game{};
     canvas.addKeyListener(&game);
 
-    auto grid = GridHelper::create(20, 10, Color::red);
-    scene->add(grid);
+    game.maze.addToScene(*scene);
 
     auto box = Box(*scene);
+    box.getMesh()->position = game.startPoint;
+
+
 
 
     canvas.onWindowResize([&](WindowSize size) {
@@ -35,18 +38,20 @@ int main() {
     canvas.animate([&] {
         if (game.isRunning()) {
             if (game.shouldMove) {
+                Vector3 newPosition = box.getMesh()->position;
+
                 switch (game.nextDirection) {
                     case Direction::LEFT:
-                        box.getMesh()->position.x -= 2.0;
+                        newPosition.x -= 2.0;
                         break;
                     case Direction::RIGHT:
-                        box.getMesh()->position.x += 2.0;
+                        newPosition.x += 2.0;
                         break;
                     case Direction::UP:
-                        box.getMesh()->position.z -= 2.0;
+                        newPosition.z -= 2.0;
                         break;
                     case Direction::DOWN:
-                        box.getMesh()->position.z += 2.0;
+                        newPosition.z += 2.0;
                         break;
                     case Direction::REST:
                         break;
@@ -54,10 +59,12 @@ int main() {
                         break;
                 }
 
-                if (abs(box.getMesh()->position.x - box.getStartingPosition().x) >= 2.0 ||
-                    abs(box.getMesh()->position.z - box.getStartingPosition().z) >= 2.0) {
-                    game.shouldMove = false;
+                // Check if the new position is not a wall
+                if (!game.maze.isWallAt(newPosition.x, newPosition.z)) {
+                    box.getMesh()->position = newPosition;
                 }
+
+                game.shouldMove = false;
             }
         }
         renderer.render(scene, camera);

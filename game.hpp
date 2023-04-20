@@ -1,8 +1,8 @@
-
 #ifndef MAZEGAME_GAME_HPP
 #define MAZEGAME_GAME_HPP
 
 #include "threepp/threepp.hpp"
+#include "maze.hpp"
 
 using namespace threepp;
 
@@ -20,12 +20,16 @@ public:
     bool running;
     bool shouldMove;
 
-    Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false) {}
+    Maze maze;
+    Vector3 startPoint;
+    Vector3 endPoint;
 
+    Game();
     void start();
     void stop();
     bool isRunning() const;
     void reset();
     void onKeyPressed(KeyEvent evt) override;
 };
+
 #endif //MAZEGAME_GAME_HPP

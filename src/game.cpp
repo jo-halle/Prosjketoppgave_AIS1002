@@ -3,6 +3,11 @@
 
 using namespace threepp;
 
+Game::Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false), maze(20, 20) {
+    startPoint = Vector3(1.0f, 0.5f, 1.0f);
+    endPoint = Vector3(37.0f, 0.5f, 37.0f);
+}
+
 void Game::start() {
     nextDirection = Direction::LEFT;
     running = true;
