@@ -25,8 +25,6 @@ int main() {
 
     auto box = Box(*scene);
 
-    int rows = 10;
-    int cols = 10;
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
