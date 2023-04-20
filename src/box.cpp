@@ -1,4 +1,4 @@
-#include "../box.hpp"
+#include "../include/box.hpp"
 #include "threepp/threepp.hpp"
 
 using namespace threepp;
@@ -8,9 +8,9 @@ Box::Box(Scene& scene, const Color &color) { // Add color parameter
     auto material = MeshBasicMaterial::create();
     material->color = color; // Use the provided color
     mesh = Mesh::create(geometry, material);
-    mesh->position.x = 0;
-    mesh->position.y = 0.5;
-    mesh->position.z = 0;
+    mesh->position.x = 1;
+    mesh->position.y = 0;
+    mesh->position.z = 1;
     startingPosition = Vector3(mesh->position.x, mesh->position.y, mesh->position.z);
     scene.add(mesh);
 }

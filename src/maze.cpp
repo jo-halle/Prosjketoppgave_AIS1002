@@ -1,4 +1,4 @@
-#include "../maze.hpp"
+#include "../include/maze.hpp"
 #include <random>
 #include <stack>
 #include <algorithm>
@@ -9,10 +9,6 @@ using namespace threepp;
 Maze::Maze(unsigned int width, unsigned int height)
         : width(width), height(height) {
     grid.resize(height, std::vector<CellType>(width, WALL));
-}
-
-bool Maze::isInside(unsigned int x, unsigned int y) const {
-    return x < width && y < height;
 }
 
 void Maze::generateMaze(unsigned int startX, unsigned int startY) {
@@ -57,11 +53,4 @@ void Maze::addToScene(Scene &scene) {
             }
         }
     }
-}
-
-bool Maze::isWallAt(unsigned int x, unsigned int y) const {
-    if (isInside(x, y)) {
-        return grid[y][x] == WALL;
-    }
-    return false;
 }

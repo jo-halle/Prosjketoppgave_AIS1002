@@ -9,3 +9,6 @@ find_package(imgui CONFIG REQUIRED)
 add_executable(testMain main.cpp src/box.cpp src/game.cpp src/maze.cpp)
 target_link_libraries(testMain PRIVATE threepp::threepp imgui::imgui)
 
+include_directories(include)
+
+
