@@ -7,7 +7,7 @@ using namespace threepp;
 
 class Box {
 public:
-    Box(Scene& scene, const Color &color); // Add color parameter
+    Box(Scene& scene, const Color &color);
     std::shared_ptr<Mesh> getMesh();
     Vector3 getStartingPosition();
 

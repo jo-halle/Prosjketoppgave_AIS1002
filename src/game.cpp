@@ -1,12 +1,14 @@
 #include "../include/game.hpp"
 #include "threepp/threepp.hpp"
+#include <chrono>
+#include <iostream>
 
 using namespace threepp;
 
-Game::Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false), maze(30, 30) {
+Game::Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false), maze(31, 31) {
     startPoint = Vector3(1.0f, 0.5f, 1.0f);
     endPoint = Vector3(37.0f, 0.5f, 37.0f);
-    maze.generateMaze(startPoint.x, startPoint.z); // Generate the maze
+    maze.generateMaze(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
 }
 
 void Game::start() {
@@ -29,6 +31,10 @@ void Game::reset() {
     shouldMove = false;
 }
 
+bool Game::isWinning(const Vector3 &currentPosition) const {
+    return currentPosition.distanceTo(endPoint) < 1.0f;
+}
+
 void Game::onKeyPressed(KeyEvent evt) {
     if (evt.key == 87 /*W*/) {
         nextDirection = Direction::UP;
@@ -49,5 +55,6 @@ void Game::onKeyPressed(KeyEvent evt) {
     if (evt.key == 82 /*R*/) {
         reset();
         start();
+        startTime = std::chrono::steady_clock::now(); // Start the timer
     }
 }

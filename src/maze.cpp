@@ -11,36 +11,50 @@ Maze::Maze(unsigned int width, unsigned int height)
     grid.resize(height, std::vector<CellType>(width, WALL));
 }
 
-void Maze::generateMaze(unsigned int startX, unsigned int startY) {
-    std::stack<std::pair<unsigned int, unsigned int>> stack;
-    stack.push({startX, startY});
+void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY) {
+    std::vector<std::pair<int, int>> directions = {
+            {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 
-    while (!stack.empty()) {
-        auto [x, y] = stack.top();
-        stack.pop();
+    auto rng = std::default_random_engine(std::random_device{}());
+    std::uniform_int_distribution<int> dist(0, directions.size() - 1);
 
-        if (!isInside(x, y) || grid[y][x] == PATH) {
+    std::vector<std::pair<int, int>> frontier;
+    frontier.emplace_back(startX, startY);
+
+    while (!frontier.empty()) {
+        auto current = frontier.back();
+        frontier.pop_back();
+
+        if (!isInside(current.first, current.second) || grid[current.second][current.first] == PATH) {
             continue;
         }
 
-        grid[y][x] = PATH;
+        grid[current.second][current.first] = PATH;
 
-        std::vector<std::pair<int, int>> directions = {
-                {0, 2}, {2, 0}, {0, -2}, {-2, 0}};
-
-        std::shuffle(directions.begin(), directions.end(), std::default_random_engine(std::random_device{}()));
-
+        std::vector<std::pair<int, int>> neighbors;
         for (const auto &[dx, dy] : directions) {
-            int nx = x + dx;
-            int ny = y + dy;
+            int nx = current.first + dx * 2;
+            int ny = current.second + dy * 2;
 
             if (isInside(nx, ny) && grid[ny][nx] == WALL) {
-                grid[y + dy / 2][x + dx / 2] = PATH;
-                stack.push({nx, ny});
+                int px = current.first + dx;
+                int py = current.second + dy;
+                if (grid[py][px] == PATH) {
+                    continue;
+                }
+                neighbors.emplace_back(nx, ny);
             }
+        }
+
+        if (!neighbors.empty()) {
+            std::shuffle(neighbors.begin(), neighbors.end(), rng);
+            grid[current.second + (neighbors[0].second - current.second) / 2][current.first + (neighbors[0].first - current.first) / 2] = PATH;
+            frontier.push_back(current);
+            frontier.push_back(neighbors[0]);
         }
     }
 }
+
 
 void Maze::addToScene(Scene &scene) {
     for (unsigned int y = 0; y < height; ++y) {
