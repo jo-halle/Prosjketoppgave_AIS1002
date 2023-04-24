@@ -1,7 +1,7 @@
 #include "threepp/threepp.hpp"
 #include "game.hpp"
 #include "box.hpp"
-
+#include <iostream>
 
 using namespace threepp;
 
@@ -15,7 +15,6 @@ int main() {
     camera->position.y = 10;
 
     OrbitControls controls{camera, canvas};
-
 
     auto scene = Scene::create();
     auto game = Game{};
@@ -63,6 +62,14 @@ int main() {
                 }
 
                 game.shouldMove = false;
+
+                // Check for winning condition
+                if (game.isWinning(box.getMesh()->position)) {
+                    auto endTime = std::chrono::steady_clock::now();
+                    game.duration = endTime - game.startTime;
+                    std::cout << "You won! Time taken: " << game.duration.count() << " seconds" << std::endl;
+                    game.stop();
+                }
             }
         }
         renderer.render(scene, camera);

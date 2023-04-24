@@ -12,7 +12,7 @@ class Maze {
 public:
     Maze(unsigned int width, unsigned int height);
 
-    void generateMaze(unsigned int startX, unsigned int startY);
+    void generateMaze(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY);
 
     void addToScene(Scene &scene);
 
