@@ -7,7 +7,7 @@ using namespace threepp;
 
 Game::Game() : nextDirection(Direction::LEFT), running(false), shouldMove(false), maze(31, 31) {
     startPoint = Vector3(1.0f, 0.5f, 1.0f);
-    endPoint = Vector3(37.0f, 0.5f, 37.0f);
+    endPoint = Vector3(29.0f, 0.5f, 29.0f);
     maze.generateMaze(startPoint.x, startPoint.z, endPoint.x, endPoint.z);
 }
 
@@ -32,7 +32,10 @@ void Game::reset() {
 }
 
 bool Game::isWinning(const Vector3 &currentPosition) const {
-    return currentPosition.distanceTo(endPoint) < 1.0f;
+    Vector2 lastPathUnitPosition = maze.getLastPathUnitPosition();
+    Vector3 lastPathUnitPosition3D(lastPathUnitPosition.x, 0.5f, lastPathUnitPosition.y);
+
+    return currentPosition.distanceTo(lastPathUnitPosition3D) < 1.0f;
 }
 
 void Game::onKeyPressed(KeyEvent evt) {

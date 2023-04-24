@@ -12,7 +12,7 @@ int main() {
 
     auto camera = PerspectiveCamera::create();
     camera->position.z = 10;
-    camera->position.y = 10;
+    camera->position.y = 20;
 
     OrbitControls controls{camera, canvas};
 
