@@ -27,7 +27,11 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
 
         if (!isInside(current.first, current.second) || grid[current.second][current.first] == PATH) {
             continue;
+
         }
+
+        grid[current.second][current.first] = PATH;
+        lastPathUnitPosition = Vector2(current.first, current.second); // Update the position
 
         grid[current.second][current.first] = PATH;
 
@@ -53,6 +57,10 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
             frontier.push_back(neighbors[0]);
         }
     }
+}
+
+Vector2 Maze::getLastPathUnitPosition() const {
+    return lastPathUnitPosition;
 }
 
 

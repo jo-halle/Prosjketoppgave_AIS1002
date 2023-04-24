@@ -18,10 +18,14 @@ public:
 
     bool isWallAt(unsigned int x, unsigned int y) const;
 
+    Vector2 getLastPathUnitPosition() const;
+
 private:
     enum CellType { WALL, PATH };
 
     bool isInside(unsigned int x, unsigned int y) const;
+
+    Vector2 lastPathUnitPosition;
 
     unsigned int width, height;
     std::vector<std::vector<CellType>> grid;
