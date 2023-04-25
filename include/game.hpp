@@ -20,6 +20,7 @@ public:
     Direction nextDirection;
     bool running;
     bool shouldMove;
+    Box *box;
 
     Maze maze;
     Vector3 startPoint;

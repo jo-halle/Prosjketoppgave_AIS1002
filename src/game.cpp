@@ -29,6 +29,14 @@ void Game::reset() {
     nextDirection = Direction::LEFT;
     running = false;
     shouldMove = false;
+
+    // Move the box back to its starting position
+    if (box) {
+        box->getMesh()->position = box->getStartingPosition();
+    }
+
+    // Restart the timer
+    startTime = std::chrono::steady_clock::now();
 }
 
 bool Game::isWinning(const Vector3 &currentPosition) const {
