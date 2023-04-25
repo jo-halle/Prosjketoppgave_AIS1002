@@ -22,6 +22,12 @@ public:
     bool shouldMove;
     Box *box;
 
+    bool winOverlay = false;
+
+    void showWinOverlay() {
+        winOverlay = true;
+    }
+
     Maze maze;
     Vector3 startPoint;
     Vector3 endPoint;
