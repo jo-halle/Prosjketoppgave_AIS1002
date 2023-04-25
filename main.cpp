@@ -23,6 +23,7 @@ int main() {
     game.maze.addToScene(*scene);
     auto box = Box(*scene, Color::orange);
     scene->add(box.getMesh());
+    game.box = &box;
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();
