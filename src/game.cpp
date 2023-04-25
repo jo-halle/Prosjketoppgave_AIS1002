@@ -1,7 +1,6 @@
 #include "../include/game.hpp"
 #include "threepp/threepp.hpp"
 #include <chrono>
-#include <iostream>
 
 using namespace threepp;
 
@@ -66,6 +65,6 @@ void Game::onKeyPressed(KeyEvent evt) {
     if (evt.key == 82 /*R*/) {
         reset();
         start();
-        startTime = std::chrono::steady_clock::now(); // Start the timer
+        startTime = std::chrono::steady_clock::now();
     }
 }

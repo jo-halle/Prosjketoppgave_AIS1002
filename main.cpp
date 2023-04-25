@@ -1,7 +1,9 @@
 #include "threepp/threepp.hpp"
 #include "game.hpp"
 #include "box.hpp"
+#include "game_imgui.hpp" // Include the GameImGui header
 #include <iostream>
+#include "threepp/Canvas.hpp"
 
 using namespace threepp;
 
@@ -19,6 +21,9 @@ int main() {
     auto scene = Scene::create();
     auto game = Game{};
     canvas.addKeyListener(&game);
+
+    // Instantiate the GameImGui class and pass it the GLFW window and game object
+    GameImGui gameImGui(static_cast<GLFWwindow *>(canvas.window_ptr()), &game);
 
     game.maze.addToScene(*scene);
     auto box = Box(*scene, Color::orange);
@@ -59,7 +64,7 @@ int main() {
                     box.getMesh()->position = newPosition;
 
                     camera->position.x = newPosition.x;
-                    camera->position.z = newPosition.z +10;
+                    camera->position.z = newPosition.z + 10;
                 }
 
                 game.shouldMove = false;
@@ -70,11 +75,26 @@ int main() {
                     game.duration = endTime - game.startTime;
                     std::cout << "You won! Time taken: " << game.duration.count() << " seconds" << std::endl;
                     game.stop();
+                    game.showWinOverlay(); // Show the win overlay
                 }
             }
         }
         renderer.render(scene, camera);
+
+        // Render the ImGui interface after rendering the game
+        gameImGui.render();
+
+        // Check for winning condition
+        if (game.isWinning(box.getMesh()->position)) {
+            auto endTime = std::chrono::steady_clock::now();
+            game.duration = endTime - game.startTime;
+            std::cout << "You won! Time taken: " << game.duration.count() << " seconds" << std::endl;
+            game.showWinOverlay(); // Call showWinOverlay() function here
+            game.stop();
+        }
+
     });
+
 
     return 0;
 }
