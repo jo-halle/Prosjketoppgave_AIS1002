@@ -32,8 +32,9 @@ public:
     Vector3 startPoint;
     Vector3 endPoint;
 
-    std::chrono::duration<float> duration; // Add a duration variable
+    std::chrono::duration<float> duration;
     std::chrono::steady_clock::time_point startTime;
+    std::chrono::steady_clock::time_point endTime;
 
     Game();
     void start();

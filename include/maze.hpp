@@ -37,7 +37,7 @@ inline bool Maze::isInside(unsigned int x, unsigned int y) const {
 
 inline bool Maze::isWallAt(unsigned int x, unsigned int y) const {
     if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
-        return true; // Check if (x, y) is a boundary cell
+        return true;
     }
     if (isInside(x, y)) {
         return grid[y][x] == WALL;
