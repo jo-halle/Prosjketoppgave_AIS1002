@@ -34,7 +34,6 @@ void Game::reset() {
         box->getMesh()->position = box->getStartingPosition();
     }
 
-    // Restart the timer
     startTime = std::chrono::steady_clock::now();
 }
 

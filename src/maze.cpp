@@ -27,11 +27,10 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
 
         if (!isInside(current.first, current.second) || grid[current.second][current.first] == PATH) {
             continue;
-
         }
 
         grid[current.second][current.first] = PATH;
-        lastPathUnitPosition = Vector2(current.first, current.second); // Update the position
+        lastPathUnitPosition = Vector2(current.first, current.second);
 
         grid[current.second][current.first] = PATH;
 
@@ -68,7 +67,7 @@ void Maze::addToScene(Scene &scene) {
     for (unsigned int y = 0; y < height; ++y) {
         for (unsigned int x = 0; x < width; ++x) {
             if (isWallAt(x, y)) {
-                Box box(scene, Color::purple); // Set the box color
+                Box box(scene, Color::purple);
                 auto cube = box.getMesh();
                 cube->position.set(x, 0, y);
                 scene.add(cube);
