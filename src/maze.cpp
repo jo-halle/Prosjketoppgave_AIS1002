@@ -17,6 +17,9 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
 
     auto rng = std::default_random_engine(std::random_device{}());
     std::uniform_int_distribution<int> dist(0, directions.size() - 1);
+    std::uniform_real_distribution<float> deadEndProbability(0.0, 1.0);
+
+    float deadEndThreshold = 0.5f; // Increase this value to create more dead ends
 
     std::vector<std::pair<int, int>> frontier;
     frontier.emplace_back(startX, startY);
@@ -31,8 +34,6 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
 
         grid[current.second][current.first] = PATH;
         lastPathUnitPosition = Vector2(current.first, current.second);
-
-        grid[current.second][current.first] = PATH;
 
         std::vector<std::pair<int, int>> neighbors;
         for (const auto &[dx, dy] : directions) {
@@ -49,11 +50,16 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
             }
         }
 
+        // Create dead ends
         if (!neighbors.empty()) {
             std::shuffle(neighbors.begin(), neighbors.end(), rng);
-            grid[current.second + (neighbors[0].second - current.second) / 2][current.first + (neighbors[0].first - current.first) / 2] = PATH;
-            frontier.push_back(current);
-            frontier.push_back(neighbors[0]);
+            for (size_t i = 0; i < neighbors.size(); i++) {
+                if (deadEndProbability(rng) < deadEndThreshold) {
+                    continue;
+                }
+                grid[current.second + (neighbors[i].second - current.second) / 2][current.first + (neighbors[i].first - current.first) / 2] = PATH;
+                frontier.push_back(neighbors[i]);
+            }
         }
     }
 }
