@@ -3,6 +3,7 @@
 #include <stack>
 #include <algorithm>
 #include <threepp/threepp.hpp>
+#include "texture_loader.hpp"
 
 using namespace threepp;
 
@@ -70,10 +71,11 @@ Vector2 Maze::getLastPathUnitPosition() const {
 
 
 void Maze::addToScene(Scene &scene) {
+    auto texture = CustomTextureLoader::load("C:/Users/Jo/project_template-master/textures/Hex.png");
     for (unsigned int y = 0; y < height; ++y) {
         for (unsigned int x = 0; x < width; ++x) {
             if (isWallAt(x, y)) {
-                Box box(scene, Color::purple);
+                Box box(scene, texture);
                 auto cube = box.getMesh();
                 cube->position.set(x, 0, y);
                 scene.add(cube);

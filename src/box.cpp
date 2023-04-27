@@ -3,10 +3,10 @@
 
 using namespace threepp;
 
-Box::Box(Scene& scene, const Color &color) {
+Box::Box(Scene& scene, const std::shared_ptr<Texture> &texture) {
     auto geometry = BoxGeometry::create();
     auto material = MeshBasicMaterial::create();
-    material->color = color;
+    material->map = texture;
     mesh = Mesh::create(geometry, material);
     mesh->position.x = 1;
     mesh->position.y = 0;

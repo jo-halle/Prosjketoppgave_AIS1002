@@ -2,6 +2,7 @@
 #include "game.hpp"
 #include "box.hpp"
 #include "game_imgui.hpp"
+#include "texture_loader.hpp"
 
 #include <iostream>
 
@@ -25,7 +26,8 @@ int main() {
     GameImGui gameImGui(static_cast<GLFWwindow *>(canvas.window_ptr()), &game);
 
     game.maze.addToScene(*scene);
-    auto box = Box(*scene, Color::orange);
+    auto texture = CustomTextureLoader::load("C:/Users/Jo/project_template-master/textures/steve.png");
+    auto box = Box(*scene, texture);
     scene->add(box.getMesh());
     game.box = &box;
 
@@ -35,7 +37,7 @@ int main() {
         renderer.setSize(size);
     });
 
-    canvas.animate([&] {
+canvas.animate([&] {
         if (game.isRunning()) {
             if (game.shouldMove) {
                 Vector3 newPosition = box.getMesh()->position;
