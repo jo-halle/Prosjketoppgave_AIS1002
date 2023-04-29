@@ -25,6 +25,8 @@ private:
 
     bool isInside(unsigned int x, unsigned int y) const;
 
+    int shortestPathLength(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY) const;
+
     Vector2 lastPathUnitPosition;
 
     unsigned int width, height;

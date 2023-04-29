@@ -26,7 +26,7 @@ int main() {
     GameImGui gameImGui(static_cast<GLFWwindow *>(canvas.window_ptr()), &game);
 
     game.maze.addToScene(*scene);
-    auto texture = CustomTextureLoader::load("C:/Users/Jo/project_template-master/textures/steve.png");
+    auto texture = CustomTextureLoader::load("../textures/steve.png");
     auto box = Box(*scene, texture);
     scene->add(box.getMesh());
     game.box = &box;
