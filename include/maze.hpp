@@ -20,8 +20,10 @@ public:
 
     Vector2 getLastPathUnitPosition() const;
 
+    void moveEndpoint();
+
 private:
-    enum CellType { WALL, PATH };
+    enum CellType { WALL, PATH, END };
 
     bool isInside(unsigned int x, unsigned int y) const;
 
@@ -30,8 +32,14 @@ private:
     Vector2 lastPathUnitPosition;
 
     unsigned int width, height;
+    unsigned int endpointX, endpointY; // Add member variables to store the endpoint coordinates
     std::vector<std::vector<CellType>> grid;
 };
+
+inline Maze::Maze(unsigned int width, unsigned int height)
+        : width(width), height(height), endpointX(0), endpointY(0) { // Initialize the member variables
+    grid.resize(height, std::vector<CellType>(width, WALL));
+}
 
 inline bool Maze::isInside(unsigned int x, unsigned int y) const {
     return x < width && y < height;

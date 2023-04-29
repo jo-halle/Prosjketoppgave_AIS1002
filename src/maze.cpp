@@ -9,7 +9,7 @@
 using namespace threepp;
 
 Maze::Maze(unsigned int width, unsigned int height)
-        : width(width), height(height) {
+        : width(width), height(height), endpointX(0), endpointY(0) {
     grid.resize(height, std::vector<CellType>(width, WALL));
 }
 
@@ -123,3 +123,30 @@ int Maze::shortestPathLength(unsigned int startX, unsigned int startY, unsigned 
 
     return -1;
 }
+
+void Maze::moveEndpoint() {
+    auto rng = std::default_random_engine(std::random_device{}());
+    std::uniform_int_distribution<unsigned int> xDist(0, width - 1);
+    std::uniform_int_distribution<unsigned int> yDist(0, height - 1);
+
+    unsigned int newEndX, newEndY;
+    do {
+        newEndX = xDist(rng);
+        newEndY = yDist(rng);
+    } while (grid[newEndY][newEndX] == WALL);
+
+    // Replace the old endpoint with a PATH cell
+    grid[endpointY][endpointX] = PATH;
+
+    // Set the new endpoint
+    endpointX = newEndX;
+    endpointY = newEndY;
+
+    // Replace the new endpoint with an END cell
+    grid[endpointY][endpointX] = END;
+}
+
+
+
+
+

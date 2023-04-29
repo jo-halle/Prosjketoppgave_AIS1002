@@ -76,13 +76,16 @@ canvas.animate([&] {
                     std::cout << "You won! Time taken: " << game.duration.count() << " seconds" << std::endl;
                     game.stop();
                     game.showWinOverlay();
+
+                    // Call moveEndpoint here
+                    game.maze.moveEndpoint();
                 }
             }
         }
-        renderer.render(scene, camera);
+    renderer.render(scene, camera);
 
-        gameImGui.render();
-    });
+    gameImGui.render();
+});
 
     return 0;
 }
