@@ -8,10 +8,18 @@
 
 using namespace threepp;
 
+void set_new_end_point(Game &game) {
+    unsigned int startX = 1;
+    unsigned int startY = 1;
+
+    // Generate a new random end point
+    game.maze.generateNewEndPoint(startX, startY);
+}
+
 int main() {
     Canvas canvas;
     GLRenderer renderer(canvas);
-    renderer.setClearColor(Color::papayawhip);
+    renderer.setClearColor(Color::darkviolet);
 
     auto camera = PerspectiveCamera::create();
     camera->position.z = 10;
@@ -23,6 +31,9 @@ int main() {
     auto game = Game{};
     canvas.addKeyListener(&game);
 
+    // Call the set_new_end_point function to set a new end point in the current maze
+    set_new_end_point(game);
+
     GameImGui gameImGui(static_cast<GLFWwindow *>(canvas.window_ptr()), &game);
 
     game.maze.addToScene(*scene);
@@ -30,6 +41,7 @@ int main() {
     auto box = Box(*scene, texture);
     scene->add(box.getMesh());
     game.box = &box;
+
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();

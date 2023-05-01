@@ -1,6 +1,7 @@
 #include "../include/game.hpp"
 #include "threepp/threepp.hpp"
 #include <chrono>
+#include <iostream>
 
 using namespace threepp;
 
@@ -14,6 +15,7 @@ void Game::start() {
     nextDirection = Direction::LEFT;
     running = true;
     shouldMove = false;
+    winOverlay = false; // Add this line to hide the win overlay when the game starts again
 }
 
 void Game::stop() {
@@ -33,6 +35,13 @@ void Game::reset() {
     if (box) {
         box->getMesh()->position = box->getStartingPosition();
     }
+
+    // Generate a new endpoint
+    maze.generateNewEndPoint(startPoint.x, startPoint.z);
+
+    // Get the last path unit position as the new endpoint and print it
+    Vector2 newEndPoint = maze.getLastPathUnitPosition();
+    std::cout << "New endpoint: (" << newEndPoint.x << ", " << newEndPoint.y << ")" << std::endl;
 
     startTime = std::chrono::steady_clock::now();
 }
