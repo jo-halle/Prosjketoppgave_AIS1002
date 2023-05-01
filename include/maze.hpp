@@ -8,17 +8,24 @@
 
 using namespace threepp;
 
+using Vector2 = threepp::Vector2; // Use this line instead of the custom Vector2 definition
+
 class Maze {
 public:
     Maze(unsigned int width, unsigned int height);
 
     void generateMaze(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY);
 
+    void generateNewEndPoint(unsigned int startX, unsigned int startY);
+
     void addToScene(Scene &scene);
 
     bool isWallAt(unsigned int x, unsigned int y) const;
 
     Vector2 getLastPathUnitPosition() const;
+
+    Vector2 getEndPoint() const;
+
 
 private:
     enum CellType { WALL, PATH };
@@ -28,6 +35,7 @@ private:
     int shortestPathLength(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY) const;
 
     Vector2 lastPathUnitPosition;
+    Vector2 endPoint; // Add this line
 
     unsigned int width, height;
     std::vector<std::vector<CellType>> grid;

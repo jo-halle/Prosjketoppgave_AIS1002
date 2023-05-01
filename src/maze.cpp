@@ -1,16 +1,24 @@
-#include "../include/maze.hpp"
+#include "maze.hpp"
+#include "texture_loader.hpp"
+
 #include <random>
 #include <stack>
 #include <algorithm>
 #include <queue>
 #include <threepp/threepp.hpp>
-#include "texture_loader.hpp"
+#include <ctime>
+#include <cstdlib>
 
 using namespace threepp;
 
 Maze::Maze(unsigned int width, unsigned int height)
         : width(width), height(height) {
+    srand(time(0));
     grid.resize(height, std::vector<CellType>(width, WALL));
+}
+
+Vector2 Maze::getEndPoint() const {
+    return endPoint;
 }
 
 void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY) {
@@ -123,3 +131,20 @@ int Maze::shortestPathLength(unsigned int startX, unsigned int startY, unsigned 
 
     return -1;
 }
+
+void Maze::generateNewEndPoint(unsigned int startX, unsigned int startY) {
+    std::default_random_engine rng(std::random_device{}());
+    std::uniform_int_distribution<int> distX(1, width - 2);
+    std::uniform_int_distribution<int> distY(1, height - 2);
+
+    int newEndX, newEndY;
+    do {
+        newEndX = distX(rng);
+        newEndY = distY(rng);
+    } while ((newEndX == startX && newEndY == startY) || isWallAt(newEndX, newEndY));
+
+    endPoint.x = newEndX;
+    endPoint.y = newEndY;
+}
+
+
