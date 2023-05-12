@@ -146,3 +146,4 @@ void Maze::generateNewEndPoint(unsigned int startX, unsigned int startY) {
 }
 
 
+
