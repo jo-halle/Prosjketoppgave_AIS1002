@@ -13,11 +13,9 @@ void test_maze_generation() {
     Maze maze(width, height);
     maze.generateMaze(startX, startY, endX, endY);
 
-    // Check if start and end positions are not walls
     assert(!maze.isWallAt(startX, startY));
     assert(!maze.isWallAt(endX, endY));
 
-    // Check if border cells are walls
     for (unsigned int x = 0; x < width; ++x) {
         assert(maze.isWallAt(x, 0));
         assert(maze.isWallAt(x, height - 1));
@@ -29,7 +27,6 @@ void test_maze_generation() {
 
     std::cout << "Maze generation test passed!" << std::endl;
 }
-
 
 int main() {
     test_maze_generation();

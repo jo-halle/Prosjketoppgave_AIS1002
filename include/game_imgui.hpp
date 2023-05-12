@@ -4,11 +4,12 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include <GLFW/glfw3.h>
 #include "game.hpp"
 
 class GameImGui {
 public:
-    GameImGui(GLFWwindow *window, Game *game);
+    GameImGui(GLFWwindow* window, Game* game);
     ~GameImGui();
     void render();
 
