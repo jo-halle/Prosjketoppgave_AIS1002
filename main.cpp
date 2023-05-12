@@ -4,6 +4,7 @@
 #include "game_imgui.hpp"
 #include "texture_loader.hpp"
 
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 using namespace threepp;
@@ -12,7 +13,6 @@ void set_new_end_point(Game &game) {
     unsigned int startX = 1;
     unsigned int startY = 1;
 
-    // Generate a new random end point
     game.maze.generateNewEndPoint(startX, startY);
 }
 
@@ -31,7 +31,6 @@ int main() {
     auto game = Game{};
     canvas.addKeyListener(&game);
 
-    // Call the set_new_end_point function to set a new end point in the current maze
     set_new_end_point(game);
 
     GameImGui gameImGui(static_cast<GLFWwindow *>(canvas.window_ptr()), &game);
@@ -41,7 +40,6 @@ int main() {
     auto box = Box(*scene, texture);
     scene->add(box.getMesh());
     game.box = &box;
-
 
     canvas.onWindowResize([&](WindowSize size) {
         camera->aspect = size.getAspect();

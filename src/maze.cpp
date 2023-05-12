@@ -22,7 +22,7 @@ Vector2 Maze::getEndPoint() const {
 }
 
 void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY) {
-    int minLength = 20; // Set your desired minimum path length here
+    int minLength = 40;
 
     std::vector<std::pair<int, int>> directions = {
             {0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -31,10 +31,9 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
     std::uniform_int_distribution<int> dist(0, directions.size() - 1);
     std::uniform_real_distribution<float> deadEndProbability(0.0, 1.0);
 
-    float deadEndThreshold = 0.5f; // Increase this value to create more dead ends
+    float deadEndThreshold = 0.5f;
 
     do {
-        // Clear the grid
         for (auto &row : grid) {
             std::fill(row.begin(), row.end(), WALL);
         }
@@ -68,7 +67,6 @@ void Maze::generateMaze(unsigned int startX, unsigned int startY, unsigned int e
                 }
             }
 
-            // Create dead ends
             if (!neighbors.empty()) {
                 std::shuffle(neighbors.begin(), neighbors.end(), rng);
                 for (size_t i = 0; i < neighbors.size(); i++) {

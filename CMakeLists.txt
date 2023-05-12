@@ -10,6 +10,7 @@ add_executable(testMain main.cpp src/box.cpp src/game.cpp src/maze.cpp src/game_
 target_link_libraries(testMain PRIVATE threepp::threepp imgui::imgui)
 
 include_directories(include  tests)
-#add_subdirectory(tests)
+add_subdirectory(tests)
+
 
 

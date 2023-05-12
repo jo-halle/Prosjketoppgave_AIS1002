@@ -8,7 +8,7 @@
 
 using namespace threepp;
 
-using Vector2 = threepp::Vector2; // Use this line instead of the custom Vector2 definition
+using Vector2 = Vector2;
 
 class Maze {
 public:
@@ -35,7 +35,7 @@ private:
     int shortestPathLength(unsigned int startX, unsigned int startY, unsigned int endX, unsigned int endY) const;
 
     Vector2 lastPathUnitPosition;
-    Vector2 endPoint; // Add this line
+    Vector2 endPoint;
 
     unsigned int width, height;
     std::vector<std::vector<CellType>> grid;
