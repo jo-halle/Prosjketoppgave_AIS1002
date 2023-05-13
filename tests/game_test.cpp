@@ -27,3 +27,8 @@ void test_game() {
 
     std::cout << "Game test passed!" << std::endl;
 }
+
+int main() {
+    test_game();
+    return 0;
+}

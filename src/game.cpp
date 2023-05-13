@@ -2,6 +2,7 @@
 #include "threepp/threepp.hpp"
 #include <chrono>
 #include <iostream>
+#include <random>
 
 using namespace threepp;
 
@@ -35,7 +36,7 @@ void Game::reset() {
         box->getMesh()->position = box->getStartingPosition();
     }
 
-    maze.generateNewEndPoint(startPoint.x, startPoint.z);
+    set_new_end_point();
 
     Vector2 newEndPoint = maze.getLastPathUnitPosition();
     std::cout << "New endpoint: (" << newEndPoint.x << ", " << newEndPoint.y << ")" << std::endl;
@@ -72,4 +73,19 @@ void Game::onKeyPressed(KeyEvent evt) {
         start();
         startTime = std::chrono::steady_clock::now();
     }
+}
+
+void Game::set_new_end_point() {
+    std::default_random_engine rng(std::random_device{}());
+    std::uniform_int_distribution<int> distX(1, maze.getWidth() - 2);
+    std::uniform_int_distribution<int> distY(1, maze.getHeight() - 2);
+
+    int newEndX, newEndY;
+    do {
+        newEndX = distX(rng);
+        newEndY = distY(rng);
+    } while ((newEndX == startPoint.x && newEndY == startPoint.z) || maze.isWallAt(newEndX, newEndY));
+
+    endPoint.x = newEndX;
+    endPoint.y = newEndY;
 }
