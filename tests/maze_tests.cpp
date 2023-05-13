@@ -28,6 +28,7 @@ void test_maze_generation() {
     std::cout << "Maze generation test passed!" << std::endl;
 }
 
+
 int main() {
     test_maze_generation();
     return 0;
