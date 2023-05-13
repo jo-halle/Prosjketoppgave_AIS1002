@@ -34,7 +34,6 @@ void GameImGui::render() {
     ImGui::End();
 
     if (game_->isRunning()) {
-        // Other ImGui rendering logic goes here
     }
 
     if (game_->winOverlay) {
