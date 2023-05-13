@@ -9,6 +9,13 @@
 
 using namespace threepp;
 
+void set_new_end_point(Game &game) {
+    unsigned int startX = 1;
+    unsigned int startY = 1;
+
+    game.maze.generateNewEndPoint(startX, startY);
+}
+
 int main() {
     Canvas canvas;
     GLRenderer renderer(canvas);
