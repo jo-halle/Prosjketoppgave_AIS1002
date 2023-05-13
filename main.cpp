@@ -9,13 +9,6 @@
 
 using namespace threepp;
 
-void set_new_end_point(Game &game) {
-    unsigned int startX = 1;
-    unsigned int startY = 1;
-
-    game.maze.generateNewEndPoint(startX, startY);
-}
-
 int main() {
     Canvas canvas;
     GLRenderer renderer(canvas);
@@ -31,7 +24,7 @@ int main() {
     auto game = Game{};
     canvas.addKeyListener(&game);
 
-    set_new_end_point(game);
+    game.set_new_end_point();
 
     GameImGui gameImGui(static_cast<GLFWwindow *>(canvas.window_ptr()), &game);
 

@@ -26,6 +26,8 @@ public:
 
     Vector2 getEndPoint() const;
 
+    unsigned int getWidth() const;
+    unsigned int getHeight() const;
 
 private:
     enum CellType { WALL, PATH };

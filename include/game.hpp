@@ -43,6 +43,8 @@ public:
     void reset();
     void onKeyPressed(KeyEvent evt) override;
     bool isWinning(const Vector3 &currentPosition) const;
+
+    void set_new_end_point();
 };
 
 #endif //MAZEGAME_GAME_HPP

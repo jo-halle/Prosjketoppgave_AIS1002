@@ -145,5 +145,13 @@ void Maze::generateNewEndPoint(unsigned int startX, unsigned int startY) {
     endPoint.y = newEndY;
 }
 
+unsigned int Maze::getWidth() const {
+    return width;
+}
+
+unsigned int Maze::getHeight() const {
+    return height;
+}
+
 
 
