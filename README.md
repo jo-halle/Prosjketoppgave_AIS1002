@@ -1,11 +1,14 @@
+Kandidat nr. 10032
+
 # MazeGame
 
-MazeGame er et 3D labyrintspill hvor spilleren må navigere gjennom en labyrint for å nå målet. Spillet bruker OpenGL for å vise labyrinten og spillerens bevegelse i sanntid. Dette prosjektet er skrevet i C++ og bruker Threepp-biblioteket for å håndtere 3D-grafikk.
+MazeGame er et 3D labyrintspill hvor spilleren må navigere gjennom en labyrint for å nå målet. Målet med spillet blir da å finne spillets målpunkt raskest mulig. Hver gang spillet starter får man en ny maze med et nytt sluttpunkt. Spillet bruker OpenGL for å vise labyrinten og spillerens bevegelse i sanntid. Dette prosjektet er skrevet i C++ og bruker Threepp-biblioteket for å håndtere 3D-grafikk.
 
 ## Funksjoner
 
 - En tilfeldig generert labyrint med justerbare dimensjoner og kompleksitet.
 - Bevegelse i sanntid med W, A, S og D-tastene.
+- Mulighet for start ved press av R tasten.
 - Mulighet for å starte, stoppe og tilbakestille spillet via et ImGui-grensesnitt.
 - Visning av spilletid og en gratulasjonsmelding ved fullføring av labyrinten.
 
