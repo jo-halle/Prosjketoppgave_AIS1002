@@ -27,11 +27,3 @@ void test_maze_generation() {
 
     std::cout << "Maze generation test passed!" << std::endl;
 }
-
-int main() {
-    test_maze_generation();
-    // Call other test functions here
-
-    std::cout << "All tests passed!" << std::endl;
-    return 0;
-}

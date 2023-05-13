@@ -12,5 +12,10 @@ target_link_libraries(testMain PRIVATE threepp::threepp imgui::imgui)
 include_directories(include  tests)
 add_subdirectory(tests)
 
+enable_testing()
+add_test(NAME MazeTests COMMAND MazeGameTests)
+add_test(NAME GameTests COMMAND GameTests)
+
+
 
 
